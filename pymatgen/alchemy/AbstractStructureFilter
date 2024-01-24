@@ -1,0 +1,24 @@
+import abc
+from functools import lru_cache
+from pymatgen import Structure
+from monty.json import MSONable
+
+class AbstractStructureFilter(MSONable, metaclass=abc.ABCMeta):
+    """AbstractStructureFilter that defines an API to perform testing of
+    Structures. Structures that return True to a test are retained during
+    transmutation while those that return False are removed.
+    """
+
+    @abc.abstractmethod
+    @lru_cache(maxsize=None)
+    def test(self, structure: Structure):
+        """Method to execute the test.
+
+        Args:
+            structure (Structure): Input structure to test
+
+        Returns:
+            bool: Structures that return true are kept in the Transmuter
+                object during filtering.
+        """
+        pass
